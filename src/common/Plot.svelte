@@ -44,8 +44,6 @@
     const ctx = canvas.getContext("2d");
     ctx.fillStyle = BG;
     ctx.fillRect(0, 0, COORD_MAX, COORD_MAX);
-
-    draw(1, "#333", false);
   }
 
   function draw(pctOverride = null, fg = FG, repeat = true) {
@@ -133,6 +131,24 @@
     > * {
       display: inline-block;
       vertical-align: middle;
+    }
+  }
+
+  @media screen and (max-width: 775px) {
+    canvas {
+      width: 80vw;
+      height: 80vw;
+      margin: 0;
+    }
+
+    h1 {
+      display: block;
+      font-size: 4vw;
+      margin: 10px 0;
+    }
+
+    .planet {
+      margin: 10vw;
     }
   }
 </style>
