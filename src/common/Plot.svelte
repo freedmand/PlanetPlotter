@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte";
+  import { shuffle } from "@/util";
 
   let canvas;
   export let planet;
@@ -8,23 +9,15 @@
   let done = false;
 
   const COORD_MAX = 1024;
-  const FINISH_TIME = 2000; // 5 seconds
+  const DELAY = 0;
+  const FINISH_TIME = 3000;
   const RAND_AMT = 1.7;
 
-  const BG = "#222";
+  const BG = "#232323";
   const FG = "#ededed";
 
   function normalize(point) {
     return (point / 256 / 256) * COORD_MAX;
-  }
-
-  // Fisher-Yates algorithm
-  function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
   }
 
   function parse(data) {
@@ -51,27 +44,29 @@
     const ctx = canvas.getContext("2d");
     ctx.fillStyle = BG;
     ctx.fillRect(0, 0, COORD_MAX, COORD_MAX);
+
+    draw(1, "#333", false);
   }
 
-  function bezierBlend(t) {
-    // Adadpted from https://stackoverflow.com/a/25730573
-    return t * t * (3 - 2 * t);
-  }
-
-  function draw() {
+  function draw(pctOverride = null, fg = FG, repeat = true) {
     if (done) return;
 
-    const currentTime = Date.now() - startTime;
+    let pct;
+    if (pctOverride == null) {
+      const currentTime = Date.now() - startTime - DELAY;
 
-    let pct = currentTime / FINISH_TIME;
-    if (pct > 1) {
-      pct = 1;
-      done = true;
+      pct = currentTime / FINISH_TIME;
+      if (pct > 1) {
+        pct = 1;
+        done = true;
+      }
+      if (pct < 0) pct = 0;
+    } else {
+      pct = pctOverride;
     }
-    // pct = bezierBlend(pct);
 
     const ctx = canvas.getContext("2d");
-    ctx.strokeStyle = FG;
+    ctx.strokeStyle = fg;
 
     for (
       let i = 0;
@@ -103,11 +98,13 @@
       ctx.stroke();
     }
 
-    window.requestAnimationFrame(draw);
+    if (repeat) {
+      window.requestAnimationFrame(() => draw());
+    }
   }
 
   onMount(async () => {
-    const response = await fetch(`planets/${planet}`);
+    const response = await fetch(`planets/${planet}.bin`);
     const buffer = await response.arrayBuffer();
     const data = new Uint16Array(buffer);
     commands = shuffle(parse(data));
@@ -119,16 +116,28 @@
 </script>
 
 <style lang="scss">
-  :global(body) {
+  canvas {
+    width: 350px;
+    height: 350px;
     margin: 50px;
-    color: #ededed;
-    background: #222222;
   }
 
-  canvas {
-    width: 512px;
-    height: 512px;
+  h1 {
+    font-weight: 100;
+    width: 200px;
+  }
+
+  .planet {
+    margin: 0 50px;
+
+    > * {
+      display: inline-block;
+      vertical-align: middle;
+    }
   }
 </style>
 
-<canvas width="1024" height="1024" bind:this={canvas} />
+<div class="planet">
+  <h1>{planet}</h1>
+  <canvas width="1024" height="1024" bind:this={canvas} />
+</div>
