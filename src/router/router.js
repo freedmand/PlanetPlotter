@@ -36,7 +36,7 @@ export const router = new Svue({
   },
   computed: {
     resolvedRoute(currentUrl, routes) {
-      if (routes == null || currentUrl == null) return null;
+      if (currentUrl == null || routes == null) return null;
       return routes.resolve(currentUrl);
     }
   }
@@ -65,8 +65,4 @@ export function pushUrl(url) {
 export function nav(to, params = null) {
   const path = getPath(to, params);
   pushUrl(path);
-}
-
-export function currentUrl() {
-  return window.location.pathname + window.location.search;
 }

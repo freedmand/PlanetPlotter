@@ -1,10 +1,15 @@
 <script>
-  import { router, Router, currentUrl } from "@/router/router";
+  import { router, Router } from "@/router/router";
   import { routes } from "@/routes";
   import { onMount } from "svelte";
+  import { currentUrl } from "@/util/url";
+  import { Svue } from "svue";
 
   // Set up routes
   router.routes = new Router(...routes);
+
+  let component = null;
+  let props = null;
 
   onMount(() => {
     router.currentUrl = currentUrl();
@@ -15,6 +20,11 @@
         window.location.href
       );
     }
+
+    router.subscribe(() => {
+      component = router != null ? router.resolvedRoute.component : null;
+      props = router != null ? router.resolvedRoute.props : null;
+    });
   });
 
   function handleBackNav(e) {
@@ -34,8 +44,6 @@
 
 <svelte:window on:popstate={handleBackNav} />
 
-{#if router.resolvedRoute != null}
-  <svelte:component
-    this={router.resolvedRoute.component}
-    {...router.resolvedRoute.props} />
+{#if component != null}
+  <svelte:component this={component} {...props} />
 {/if}
