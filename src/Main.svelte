@@ -22,6 +22,16 @@
   }
 </script>
 
+<style lang="scss">
+  :global(html, body) {
+    position: relative;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: "Leon Sans", sans-serif;
+  }
+</style>
+
 <svelte:window on:popstate={handleBackNav} />
 
 {#if $router.resolvedRoute != null}

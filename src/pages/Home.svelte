@@ -1,14 +1,16 @@
 <script>
-  import VirtualList from "@/common/VirtualList";
-  import Plot from "@/common/Plot";
   import { onMount } from "svelte";
-  import { shuffle } from "@/util";
+  import { parseCsv } from "@/data/parseCsv";
+  import { shuffle } from "weighted-shuffle";
+  import Planets from "@/common/Planets";
+  import Header from "@/common/Header";
 
-  let planets = [];
+  let planets = null;
 
   onMount(async () => {
-    const response = await fetch("planets/listing.json");
-    planets = shuffle(await response.json());
+    const response = await fetch("/planets/planets.csv");
+    const text = await response.text();
+    planets = shuffle(parseCsv(text), "desc").map(x => x[0]);
   });
 </script>
 
@@ -17,10 +19,19 @@
     margin: 0;
     color: #ededed;
     background: #222222;
-    font-family: "Avenir Next", Avenir, Helvetica, Arial, sans-serif;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .loading {
+    padding: 90px 6vw;
   }
 </style>
 
-<VirtualList items={planets} let:item>
-  <Plot planet={item} />
-</VirtualList>
+{#if planets == null}
+  <Header />
+  <div class="loading">Loading...</div>
+{:else}
+  <Planets {planets} />
+{/if}
