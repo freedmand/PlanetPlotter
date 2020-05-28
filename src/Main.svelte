@@ -34,8 +34,8 @@
 
 <svelte:window on:popstate={handleBackNav} />
 
-{#if $router.resolvedRoute != null}
+{#if router.resolvedRoute != null}
   <svelte:component
-    this={$router.resolvedRoute.component}
-    {...$router.resolvedRoute.props} />
+    this={router.resolvedRoute.component}
+    {...router.resolvedRoute.props} />
 {/if}
