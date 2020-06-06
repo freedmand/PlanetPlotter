@@ -10,8 +10,12 @@
   onMount(async () => {
     const response = await fetch("/planets/planets.csv");
     const text = await response.text();
-    planets = shuffle(parseCsv(text), "desc").map(x => x[0]);
+    planets = parseCsv(text);
   });
+
+  function handleNewPlanets(e) {
+    planets = e.detail;
+  }
 </script>
 
 <style lang="scss">

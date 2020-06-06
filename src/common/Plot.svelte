@@ -116,6 +116,7 @@
 
       if (drawPercent > 0.15) {
         drawing = true;
+        console.log("drawing");
         draw(0);
       }
     }

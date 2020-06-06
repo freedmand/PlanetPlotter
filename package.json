@@ -39,6 +39,7 @@
 		"test-watch": "jest --watchAll"
 	},
 	"dependencies": {
+		"konami": "^1.6.2",
 		"svue": "^1.5.3",
 		"weighted-shuffle": "^0.2.0"
 	}
