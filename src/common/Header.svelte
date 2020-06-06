@@ -4,7 +4,7 @@
 
 <style lang="scss">
   header {
-    position: fixed;
+    position: sticky;
     top: 0;
     width: 100%;
     background: #222222;

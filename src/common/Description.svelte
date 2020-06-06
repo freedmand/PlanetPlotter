@@ -53,7 +53,7 @@
 
     > table > tr > td {
       vertical-align: top;
-      padding: 1vw 0.3vw 1vw 0;
+      padding: 0 0.3vw 0 0;
       width: 20vw;
 
       @media screen and (max-width: 725px) {
@@ -66,6 +66,7 @@
     .title {
       font-weight: bold;
       font-size: calc(15px + 1.1vw);
+      padding-top: 1vw;
 
       @media screen and (max-width: 725px) {
         font-size: 13px;

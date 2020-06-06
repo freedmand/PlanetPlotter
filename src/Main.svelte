@@ -40,6 +40,15 @@
     padding: 0;
     font-family: "Leon Sans", sans-serif;
   }
+
+  :global(body) {
+    margin: 0;
+    color: #ededed;
+    background: #222222;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
 </style>
 
 <svelte:window on:popstate={handleBackNav} />

@@ -15,15 +15,6 @@
 </script>
 
 <style lang="scss">
-  :global(body) {
-    margin: 0;
-    color: #ededed;
-    background: #222222;
-    position: relative;
-    overflow-x: hidden;
-    overflow-y: auto;
-  }
-
   .loading {
     padding: 90px 6vw;
   }

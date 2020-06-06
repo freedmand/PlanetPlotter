@@ -20,13 +20,14 @@
   .scroller {
     overflow-x: hidden;
     height: 100vh;
-    padding-top: 30px;
+    overflow-y: auto;
+    scrollbar-color: rgb(237, 237, 237) #151515;
   }
 </style>
 
-<Header />
-
 <div class="scroller" bind:this={scroller} on:scroll={updateScroll}>
+  <Header />
+  <div class="padding" />
   {#each planets as planet (planet.name)}
     <Planet {planet} scroll={$scrollPosition} {windowWidth} {windowHeight} />
   {/each}
